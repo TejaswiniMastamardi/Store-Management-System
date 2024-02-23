@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="storeManagementApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Store Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div ng-controller="StoreController as storeCtrl">
+        <header>
+            <h1>Store Management System</h1>
+        </header>
+        <section class="product-list">
+            <h2>Product List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price per Unit</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="product in storeCtrl.products">
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.quantity }} {{ product.unit }}</td>
+                        <td>{{ product.total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="add-product">
+            <h2>Add New Product</h2>
+            <form ng-submit="storeCtrl.addProduct()">
+                <input type="text" placeholder="Product Name" ng-model="storeCtrl.newProduct.name" pattern="[A-Za-z ]+" title="Please enter alphabetic characters only" required>
+                <input type="number" placeholder="Price per unit" ng-model="storeCtrl.newProduct.price" required>
+                <input type="number" placeholder="Quantity" ng-model="storeCtrl.newProduct.quantity" required>
+                <select ng-model="storeCtrl.newProduct.unit" required>
+                    <option value="kg">kg</option>
+                    <option value="piece">piece</option>
+                    <option value="litre">litre</option>
+                </select>
+                <button type="submit">Add Product</button>
+            </form>
+        </section>
+        <section class="checkout">
+            <h2>Checkout</h2>
+            <label for="purchaserName">Name:</label>
+            <input type="text" id="purchaserName" ng-model="storeCtrl.billDetails.purchaserName" pattern="[A-Za-z ]+" title="Please enter alphabetic characters only" required>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" ng-model="storeCtrl.billDetails.phoneNumber" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" required>
+            <button ng-click="storeCtrl.generateBill()">Generate Bill</button>
+        </section>
+        <section ng-if="storeCtrl.bill">
+            <h2>Bill</h2>
+            <p>Date: {{ storeCtrl.billDetails.date }}</p>
+            <p>Time: {{ storeCtrl.billDetails.time }}</p>
+            <p>Purchaser Name: {{ storeCtrl.billDetails.purchaserName }}</p>
+            <p>Phone Number: {{ storeCtrl.billDetails.phoneNumber }}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in storeCtrl.bill">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Total Amount: {{ storeCtrl.total }}</p>
+        </section>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
